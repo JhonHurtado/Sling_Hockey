@@ -1,309 +1,312 @@
 # 🏒 Sling Hockey - Juego Multijugador LAN
 
-Juego multijugador tipo "Sling Hockey" para jugar en red local (LAN) sin necesidad de internet.
+<div align="center">
 
-## 🎯 Características
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)
 
-- **Multijugador en LAN**: Hasta 4 jugadores (2 por equipo)
-- **Sistema de Salas**: Código único o QR para unirse
-- **Roles**: Administrador, Jugadores y Observadores
-- **Física Realista**: Implementado con Matter.js
-- **Tiempo Real**: Comunicación con Socket.IO (WebSockets)
-- **Sin Internet**: Funciona completamente en red local
+**Juego multijugador tipo "Sling Hockey" para red local (LAN) sin internet**
 
-## 🛠️ Stack Tecnológico
+[Demo](#) • [Documentación](#documentación) • [Instalación](#-instalación-rápida) • [Contribuir](CONTRIBUTING.md)
 
-### Cliente
-- React 19 + Vite
-- TypeScript
-- Zustand (gestión de estado)
-- Tailwind CSS + shadcn/ui
-- Matter.js (física 2D)
-- Socket.IO Client
-- QR Code React
+</div>
 
-### Servidor
-- Node.js + Express
-- TypeScript
-- Socket.IO (WebSockets)
-- Nanoid (códigos de sala)
-- Zod (validación)
+---
 
-## 📦 Instalación
+## ✨ Características
 
-### Requisitos previos
-- Node.js 18+ y npm/yarn/pnpm
+- 🎮 **Multijugador Local**: Hasta 4 jugadores (2 por equipo)
+- 🔐 **Sistema de Salas**: Códigos únicos y QR para unirse fácilmente
+- 👥 **Roles Flexibles**: Administrador, Jugadores y Espectadores
+- ⚡ **Tiempo Real**: Comunicación fluida con Socket.IO
+- 🎯 **Física Realista**: Motor Matter.js para mecánicas suaves
+- 📱 **Sin Internet**: Funciona 100% en red local
+- 🎨 **UI Moderna**: Interfaz limpia con Tailwind CSS y Radix UI
+- 🔒 **Servidor Autoritativo**: Previene trampas
+
+## 🎬 Preview
+
+```
+┌─────────────────────────────────────────────────┐
+│  🏒 SLING HOCKEY                                │
+│  ┌──────────────┐         ┌──────────────┐     │
+│  │ Crear Sala   │         │ Unirse      │     │
+│  └──────────────┘         └──────────────┘     │
+│                                                 │
+│  Código de sala: ABC123                        │
+│  [QR CODE]                                     │
+│                                                 │
+│  🔴 Equipo Rojo: 2    vs    🔵 Equipo Azul: 3  │
+│  Tiempo: 2:45                                  │
+│  ┌─────────────────────────────────────────┐  │
+│  │     ╔═══════════════════════════╗       │  │
+│  │     ║  🔴  🔴  ║  🔵  🔵  🔵  ║       │  │
+│  │     ╚═══════════════════════════╝       │  │
+│  └─────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────┘
+```
+
+## 🚀 Instalación Rápida
+
+### Prerequisitos
+
+- Node.js 18+ ([Descargar](https://nodejs.org/))
+- npm 9+
 - Git
 
-### Clonar el repositorio
+### Instalación Automática
 
+**Linux/macOS:**
 ```bash
 git clone https://github.com/JhonHurtado/Sling_Hockey.git
 cd Sling_Hockey
+chmod +x scripts/setup.sh
+./scripts/setup.sh
 ```
 
-### Instalar dependencias
+**Windows PowerShell:**
+```powershell
+git clone https://github.com/JhonHurtado/Sling_Hockey.git
+cd Sling_Hockey
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\scripts\setup.ps1
+```
+
+### Instalación Manual
 
 ```bash
-# Instalar dependencias de todos los paquetes
-npm install
+# 1. Clonar repositorio
+git clone https://github.com/JhonHurtado/Sling_Hockey.git
+cd Sling_Hockey
 
-# O instalar por separado
+# 2. Instalar dependencias
+npm install
 cd types && npm install && cd ..
 cd server && npm install && cd ..
 cd client && npm install && cd ..
+
+# 3. Configurar entorno
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+
+# 4. Construir tipos
+cd types && npm run build && cd ..
 ```
 
-## 🚀 Uso
+## 🎮 Inicio Rápido
 
-### Modo Desarrollo
+### Desarrollo
 
-**Opción 1: Ejecutar todo desde la raíz**
 ```bash
+# Opción 1: Todo en uno (recomendado)
 npm run dev
+
+# Opción 2: Separado
+# Terminal 1
+cd server && npm run dev
+
+# Terminal 2
+cd client && npm run dev
 ```
 
-**Opción 2: Ejecutar por separado**
+**Acceso:**
+- Cliente: http://localhost:5173
+- Servidor: http://localhost:3001
+
+### Producción
 
 ```bash
-# Terminal 1 - Servidor
-cd server
-npm run dev
-
-# Terminal 2 - Cliente
-cd client
-npm run dev
-```
-
-### Modo Producción
-
-```bash
-# Construir cliente
-cd client
-npm run build
-
-# Iniciar servidor (sirve el cliente construido)
-cd ../server
 npm run build
 npm start
 ```
 
-## 🌐 Configuración LAN
+## 🌐 Jugar en LAN
 
-### Para el Host (quien crea la sala):
+### 1️⃣ Host (Anfitrión)
 
-1. **Encontrar tu IP local**:
-
-   **Windows:**
+1. **Encontrar IP local:**
    ```bash
-   ipconfig
-   # Busca "IPv4 Address" en tu adaptador de red activo
-   ```
-
-   **Mac/Linux:**
-   ```bash
-   ifconfig
-   # O
-   ip addr show
-   # Busca la IP que empiece con 192.168.x.x o 10.0.x.x
-   ```
-
-2. **Iniciar el servidor**:
-   ```bash
-   cd server
-   npm start
-   ```
+   # Automático
+   node scripts/get-local-ip.js
    
-   El servidor escuchará en `0.0.0.0:3001` (accesible en toda la red local)
+   # Manual
+   # Windows: ipconfig
+   # Mac/Linux: ifconfig
+   ```
 
-3. **Abrir el cliente**:
-   - Desarrollo: `http://localhost:5173`
-   - Producción: `http://localhost:3001`
+2. **Iniciar servidor:**
+   ```bash
+   cd server && npm run dev
+   ```
 
-4. **Crear una sala** y compartir:
-   - El código de 6 caracteres
-   - O el QR code generado
-   - Tu IP local (ej: `192.168.1.100`)
+3. **Crear sala** y compartir código/QR
 
-### Para los Jugadores:
+### 2️⃣ Jugadores
 
-1. **Conectarse a la misma red WiFi** que el host
+1. Conectarse a la **misma red WiFi**
+2. Abrir navegador en: `http://[IP-HOST]:5173`
+3. Ingresar código de sala
 
-2. **Abrir el navegador** en:
-   - Desarrollo: `http://[IP-DEL-HOST]:5173`
-   - Producción: `http://[IP-DEL-HOST]:3001`
-   
-   Ejemplo: `http://192.168.1.100:3001`
+## 📚 Documentación
 
-3. **Unirse con código** o escanear el QR
+- 📖 [README Completo](README.md) - Documentación completa
+- ⚡ [Quick Start](QUICK_START.md) - Inicio en 5 minutos
+- 📥 [Instalación Detallada](INSTALLATION.md) - Guía paso a paso
+- 🚀 [Deployment](DEPLOYMENT.md) - Producción y Docker
+- 🤝 [Contribuir](CONTRIBUTING.md) - Cómo colaborar
+- 📊 [Project Summary](PROJECT_SUMMARY.md) - Resumen técnico
 
-## 🎮 Cómo Jugar
+## 🛠️ Stack Tecnológico
 
-### Roles
+### Frontend
+- React 18 + Vite
+- TypeScript
+- Zustand (Estado)
+- Tailwind CSS + Radix UI
+- Socket.IO Client
+- Matter.js (Física)
+- QR Code React
 
-- **Administrador (Host)**:
-  - Crea la sala
-  - Decide si juega o solo observa
-  - Asigna equipos
-  - Inicia/pausa/reinicia partidas
-  - Puede expulsar jugadores
+### Backend
+- Node.js + Express
+- TypeScript
+- Socket.IO (WebSockets)
+- Matter.js (Física)
+- Zod (Validación)
+- Nanoid (Códigos únicos)
 
-- **Jugadores**:
-  - Se unen por código o QR
-  - Seleccionan equipo (Rojo o Azul)
-  - Juegan moviendo las fichas
-
-- **Observadores**:
-  - Ven la partida sin interactuar
-
-### Reglas del Juego
-
-1. Tablero rectangular dividido por una ranura central
-2. Cada equipo inicia con fichas (pucks) en su lado
-3. **Objetivo**: Pasar todas tus fichas al lado contrario
-4. **Fin de ronda**: Cuando un equipo queda sin fichas o expira el tiempo
-5. Gana el equipo que complete el objetivo primero
-
-### Controles
-
-- **Mouse/Touch**: Click y arrastra una ficha para lanzarla (efecto resortera)
-- El servidor es autoritativo (previene trampas)
-
-## 📡 Arquitectura de Red
-
-### Todo funciona con Socket.IO (WebSockets)
-
-**Cliente → Servidor:**
-- `room:create` - Crear sala
-- `room:join` - Unirse a sala
-- `room:leave` - Salir de sala
-- `game:start` - Iniciar partida
-- `game:pause` - Pausar partida
-- `game:reset` - Reiniciar partida
-- `input:sling` - Enviar input de lanzamiento
-- `chat:send` - Enviar mensaje de chat
-
-**Servidor → Cliente:**
-- `room:state` - Estado actual de la sala
-- `game:snapshot` - Snapshot del estado del juego (15-20 FPS)
-- `game:event` - Eventos del juego (gol, fin de ronda, etc.)
-- `chat:msg` - Mensaje de chat
-- `error` - Errores
-
-### Sin endpoints REST
-- No se usan llamadas HTTP para el flujo del juego
-- El servidor solo sirve el build de React en producción
-- Todo lo demás es comunicación WebSocket
-
-## 🧪 Testing
-
-```bash
-# Tests del cliente
-cd client
-npm test
-
-# Tests del servidor
-cd server
-npm test
-```
+### Testing
+- Vitest (Cliente)
+- Jest (Servidor)
 
 ## 📁 Estructura del Proyecto
 
 ```
 Sling_Hockey/
 ├── types/              # Tipos TypeScript compartidos
-│   └── index.ts        # DTOs y contratos de eventos
-├── server/             # Servidor Node.js
+│   └── src/index.ts
+├── server/             # Backend Node.js + Socket.IO
 │   └── src/
-│       ├── index.ts    # Punto de entrada
-│       ├── server.ts   # Configuración Express + Socket.IO
 │       ├── game/       # Motor de juego y física
 │       ├── room/       # Gestión de salas
-│       └── socket/     # Handlers de Socket.IO
-└── client/             # Cliente React
+│       └── socket/     # Handlers WebSocket
+└── client/             # Frontend React + Vite
     └── src/
         ├── components/ # Componentes React
-        ├── store/      # Estado global (Zustand)
-        ├── hooks/      # Custom hooks (useSocket)
-        └── lib/        # Utilidades
+        ├── hooks/      # Custom hooks
+        └── store/      # Estado global (Zustand)
 ```
 
-## 🔧 Variables de Entorno
+## 🎯 Comandos Principales
 
-### Server (.env)
-```env
-PORT=3001
-NODE_ENV=development
-```
+```bash
+# Desarrollo
+npm run dev              # Ejecutar todo
+npm run dev:server       # Solo servidor
+npm run dev:client       # Solo cliente
 
-### Client (.env)
-```env
-VITE_SERVER_URL=http://localhost:3001
-```
+# Build
+npm run build            # Construir todo
+npm run build:types      # Solo tipos
+npm run build:server     # Solo servidor
+npm run build:client     # Solo cliente
 
-**Para LAN en producción**, cambia la URL del servidor a la IP local:
-```env
-VITE_SERVER_URL=http://192.168.1.100:3001
+# Producción
+npm start                # Iniciar servidor producción
+
+# Tests
+npm test                 # Todos los tests
+npm run test:server      # Tests servidor
+npm run test:client      # Tests cliente
+
+# Docker
+docker-compose up        # Levantar con Docker
 ```
 
 ## 🐛 Troubleshooting
 
-### Los jugadores no pueden conectarse
+### Jugadores no pueden conectarse
 
-1. **Verifica que todos estén en la misma red WiFi**
-2. **Revisa el firewall**: Asegúrate que el puerto 3001 esté abierto
-   - Windows: `netsh advfirewall firewall add rule name="Sling Hockey" dir=in action=allow protocol=TCP localport=3001`
-3. **Usa la IP correcta**: Debe ser la IP local (192.168.x.x o 10.0.x.x), no 127.0.0.1
+✅ **Verificar:**
+- Misma red WiFi
+- IP local correcta (no 127.0.0.1)
+- Firewall permite puerto 3001
 
-### El juego va lento
+**Windows - Abrir puerto:**
+```powershell
+netsh advfirewall firewall add rule name="Sling Hockey" dir=in action=allow protocol=TCP localport=3001
+```
 
-1. Reduce la tasa de snapshots en `server/src/game/GameEngine.ts`
-2. Verifica la calidad de tu red WiFi
-3. Cierra otras aplicaciones que usen la red
-
-### Errores de compilación
+### Error de compilación
 
 ```bash
-# Limpiar y reinstalar
 rm -rf node_modules package-lock.json
 rm -rf */node_modules */package-lock.json
 npm install
 ```
 
-## 📝 Próximas Características
+Más soluciones en [INSTALLATION.md](INSTALLATION.md#solución-de-problemas)
 
+## 🗺️ Roadmap
+
+### v1.1 (Próxima)
+- [ ] Soporte táctil mejorado (móviles)
+- [ ] Efectos de sonido
+- [ ] Power-ups
 - [ ] Diferentes modos de juego
-- [ ] Power-ups y obstáculos
+
+### v2.0 (Futuro)
 - [ ] Sistema de ranking
 - [ ] Replay de partidas
-- [ ] Personalización de avatares
-- [ ] Audio y efectos de sonido
-- [ ] Diferentes tableros temáticos
+- [ ] Customización de avatares
+- [ ] Más tableros temáticos
+
+Ver [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) para más detalles.
 
 ## 🤝 Contribuir
 
-1. Fork el proyecto
-2. Crea tu rama de característica (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+¡Las contribuciones son bienvenidas! Por favor lee [CONTRIBUTING.md](CONTRIBUTING.md) para detalles sobre:
+
+- Cómo reportar bugs
+- Cómo sugerir características
+- Proceso de Pull Requests
+- Guía de estilo de código
 
 ## 📄 Licencia
 
-MIT License - ver el archivo LICENSE para más detalles
+Este proyecto está bajo la Licencia MIT. Ver [LICENSE](LICENSE) para más información.
 
-## 👤 Autor
+## 👨‍💻 Autor
 
 **JhonHurtado**
 - GitHub: [@JhonHurtado](https://github.com/JhonHurtado)
+- Repositorio: [Sling_Hockey](https://github.com/JhonHurtado/Sling_Hockey)
 
 ## 🙏 Agradecimientos
 
-- React + Vite por el excelente setup de desarrollo
-- Socket.IO por la comunicación en tiempo real
-- Matter.js por el motor de física
-- La comunidad open source
+- [React](https://react.dev/) + [Vite](https://vitejs.dev/) - Excelente DX
+- [Socket.IO](https://socket.io/) - WebSockets en tiempo real
+- [Matter.js](https://brm.io/matter-js/) - Motor de física 2D
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+- [Radix UI](https://www.radix-ui.com/) - Componentes accesibles
+- La comunidad open source 🌟
+
+## 📞 Soporte
+
+- 🐛 Reportar bugs: [GitHub Issues](https://github.com/JhonHurtado/Sling_Hockey/issues)
+- 💬 Discusiones: [GitHub Discussions](https://github.com/JhonHurtado/Sling_Hockey/discussions)
+- 📧 Contacto: [GitHub Profile](https://github.com/JhonHurtado)
 
 ---
 
-¡Diviértete jugando Sling Hockey! 🏒🎮
+<div align="center">
+
+**¡Diviértete jugando Sling Hockey! 🏒🎮**
+
+Si te gusta el proyecto, ¡dale una ⭐ en GitHub!
+
+[⬆ Volver arriba](#-sling-hockey---juego-multijugador-lan)
+
+</div>

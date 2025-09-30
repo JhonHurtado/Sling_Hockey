@@ -3,6 +3,7 @@
 ## 💻 Configuración en 5 Minutos
 
 ### 1️⃣ Instalación
+
 ```bash
 # Clonar el repositorio
 git clone https://github.com/JhonHurtado/Sling_Hockey.git
@@ -15,7 +16,23 @@ cd server && npm install && cd ..
 cd client && npm install && cd ..
 ```
 
-### 2️⃣ Configurar Variables de Entorno
+### 2️⃣ Construir Tipos Compartidos
+
+**⚠️ IMPORTANTE: Este paso es necesario antes de ejecutar el proyecto**
+
+```bash
+# Construir el paquete de tipos (requerido por servidor y cliente)
+cd types
+npm run build
+cd ..
+```
+
+O desde la raíz:
+```bash
+npm run build:types
+```
+
+### 3️⃣ Configurar Variables de Entorno
 
 **Server (.env)**
 ```bash
@@ -31,11 +48,12 @@ cp .env.example .env
 # Para desarrollo local, dejar como está
 ```
 
-### 3️⃣ Ejecutar en Desarrollo
+### 4️⃣ Ejecutar en Desarrollo
 
 **Opción A: Todo en uno (recomendado)**
 ```bash
 # Desde la raíz del proyecto
+# Nota: El comando ya construye los tipos automáticamente
 npm run dev
 ```
 
@@ -50,7 +68,8 @@ cd client
 npm run dev
 ```
 
-### 4️⃣ Acceder a la Aplicación
+### 5️⃣ Acceder a la Aplicación
+
 - Abre tu navegador en: **http://localhost:5173**
 - El servidor estará en: **http://localhost:3001**
 
@@ -58,29 +77,33 @@ npm run dev
 
 ## 🌐 Jugar en Red Local (LAN)
 
-### Para el Anfitrion (Host)
+### Para el Anfitrión (Host)
 
 1. **Encontrar tu IP local**
 
-   **Windows:**
+   **Automático (recomendado):**
+   ```bash
+   node scripts/get-local-ip.js
+   ```
+
+   **Manual - Windows:**
    ```bash
    ipconfig
    ```
    Busca "Dirección IPv4" (ej: 192.168.1.100)
 
-   **Mac:**
+   **Manual - Mac:**
    ```bash
    ifconfig | grep "inet "
    ```
 
-   **Linux:**
+   **Manual - Linux:**
    ```bash
    ip addr show | grep "inet "
    ```
 
 2. **Iniciar el servidor**
    ```bash
-   cd server
    npm run dev
    ```
    
@@ -118,25 +141,48 @@ npm run dev
 
 ```bash
 # Desarrollo
-npm run dev              # Ejecutar todo
+npm run dev              # Ejecutar todo (construye tipos automáticamente)
 npm run dev:server       # Solo servidor
 npm run dev:client       # Solo cliente
 
-# Construir para producción
+# Construir
 npm run build            # Construir todo
+npm run build:types      # Solo tipos compartidos
+npm run build:server     # Solo servidor
+npm run build:client     # Solo cliente
 
-# Ejecutar en producción
+# Producción
 npm start                # Servidor + cliente estático
 
 # Tests
 npm test                 # Todos los tests
 npm run test:server      # Tests del servidor
 npm run test:client      # Tests del cliente
+
+# Utilidades
+node scripts/get-local-ip.js  # Ver tu IP local para LAN
 ```
 
 ---
 
 ## 🐛 Problemas Comunes
+
+### Error: "Cannot find module '@sling-hockey/types'"
+
+**Este es el error más común al primer arranque.**
+
+✅ **Solución Rápida:**
+```bash
+# Opción 1: Construir tipos manualmente
+cd types && npm run build && cd ..
+npm run dev
+
+# Opción 2: Reinstalar (ejecuta postinstall automáticamente)
+npm install
+npm run dev
+```
+
+**Causa:** El paquete de tipos no se construyó antes de ejecutar servidor/cliente.
 
 ### Los jugadores no se pueden conectar
 
@@ -146,41 +192,68 @@ npm run test:client      # Tests del cliente
 - Verifica el **firewall** (puerto 3001 y 5173)
 
 **Windows - Abrir puertos:**
-```bash
+```powershell
 netsh advfirewall firewall add rule name="Sling Hockey Server" dir=in action=allow protocol=TCP localport=3001
 netsh advfirewall firewall add rule name="Sling Hockey Client" dir=in action=allow protocol=TCP localport=5173
+```
+
+**Linux (UFW):**
+```bash
+sudo ufw allow 3001/tcp
+sudo ufw allow 5173/tcp
+sudo ufw reload
 ```
 
 ### Error de compilación
 
 ✅ **Solución:**
 ```bash
-# Limpiar y reinstalar
+# Limpiar y reinstalar todo
 rm -rf node_modules package-lock.json
 rm -rf */node_modules */package-lock.json
+
 npm install
 cd types && npm install && cd ..
 cd server && npm install && cd ..
 cd client && npm install && cd ..
+
+# Construir tipos
+cd types && npm run build && cd ..
 ```
 
 ### El juego va lento
 
 ✅ **Solución:**
-- Reduce la tasa de snapshots en `server/src/game/GameEngine.ts`
 - Mejora la señal WiFi (acércate al router)
+- Usa WiFi 5GHz si está disponible
 - Cierra aplicaciones que usen mucho la red
+- Considera reducir la tasa de snapshots (ver [TROUBLESHOOTING.md](TROUBLESHOOTING.md))
 
 ---
 
 ## 📚 Más Información
 
-Consulta el [README.md](./README.md) completo para:
-- Arquitectura detallada
-- API de Socket.IO
-- Configuración avanzada
-- Contribuir al proyecto
+- 📖 [README.md](./README.md) - Documentación completa
+- 🔧 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) - Solución de problemas detallada
+- 📥 [INSTALLATION.md](./INSTALLATION.md) - Instalación paso a paso
+- 🚀 [DEPLOYMENT.md](./DEPLOYMENT.md) - Despliegue y producción
+- 🤝 [CONTRIBUTING.md](./CONTRIBUTING.md) - Cómo contribuir
+
+---
+
+## ✅ Checklist de Instalación
+
+- [ ] Node.js 18+ instalado
+- [ ] Repositorio clonado
+- [ ] Dependencias instaladas (`npm install` en todos los paquetes)
+- [ ] **Tipos construidos** (`cd types && npm run build`)
+- [ ] Variables de entorno configuradas (.env copiados)
+- [ ] Servidor corriendo sin errores
+- [ ] Cliente abierto en el navegador
+- [ ] Sala creada y código compartido (para LAN)
 
 ---
 
 🎮 **¡Diviértete jugando Sling Hockey!**
+
+💡 **Tip:** Si encuentras problemas, consulta [TROUBLESHOOTING.md](TROUBLESHOOTING.md) para soluciones detalladas.

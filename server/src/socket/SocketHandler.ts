@@ -1,5 +1,5 @@
 import { Server as SocketServer, Socket } from 'socket.io';
-import { RoomManager } from '../room/RoomManager';
+import { RoomManager } from '../room/RoomManager.js';
 import {
   CreateRoomSchema,
   JoinRoomSchema,
@@ -349,8 +349,7 @@ export class SocketHandler {
     let message = 'An error occurred';
     
     if (error instanceof ZodError) {
-      message = error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
-    } else if (error instanceof Error) {
+      message = error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');\n    } else if (error instanceof Error) {
       message = error.message;
     }
 

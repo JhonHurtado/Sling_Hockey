@@ -1,5 +1,5 @@
 import Matter from 'matter-js';
-import { GameStateManager } from './GameState';
+import { GameStateManager } from './GameState.js';
 import { InputSlingData, CONSTANTS, GameConfig } from '@sling-hockey/types';
 
 export class GameEngine {

@@ -3,8 +3,13 @@ import { createServer as createHttpServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import cors from 'cors';
 import path from 'path';
-import { SocketHandler } from './socket/SocketHandler';
-import { RoomManager } from './room/RoomManager';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { SocketHandler } from './socket/SocketHandler.js';
+import { RoomManager } from './room/RoomManager.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export function createServer() {
   const app = express();

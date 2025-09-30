@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
-import { createServer } from './server';
+import { createServer } from './server.js';
+import os from 'os';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -19,15 +20,17 @@ async function start() {
       console.log(`Local: http://localhost:${PORT}`);
       
       // Obtener IP local
-      const os = require('os');
       const networkInterfaces = os.networkInterfaces();
-      const addresses = [];
+      const addresses: string[] = [];
       
       for (const name of Object.keys(networkInterfaces)) {
-        for (const net of networkInterfaces[name]) {
-          // IPv4 y no loopback
-          if (net.family === 'IPv4' && !net.internal) {
-            addresses.push(net.address);
+        const nets = networkInterfaces[name];
+        if (nets) {
+          for (const net of nets) {
+            // IPv4 y no loopback
+            if (net.family === 'IPv4' && !net.internal) {
+              addresses.push(net.address);
+            }
           }
         }
       }

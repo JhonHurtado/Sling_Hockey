@@ -1,4 +1,4 @@
-import { Room } from './Room';
+import { Room } from './Room.js';
 import { GameConfig } from '@sling-hockey/types';
 
 export class RoomManager {

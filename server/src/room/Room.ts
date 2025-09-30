@@ -1,5 +1,5 @@
 import { Player, PlayerRole, Team, GameConfig, CONSTANTS } from '@sling-hockey/types';
-import { GameEngine } from '../game/GameEngine';
+import { GameEngine } from '../game/GameEngine.js';
 import { nanoid } from 'nanoid';
 
 export class Room {

@@ -2,11 +2,21 @@
   "name": "@sling-hockey/types",
   "version": "1.0.0",
   "description": "Shared TypeScript types for Sling Hockey",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "zod": "^3.22.4"
